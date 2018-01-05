@@ -8,13 +8,16 @@ var Table = require('cli-table');
 var request = require("request");
 
 var app = express();
-
+var PORT =  process.env.PORT || 8080;
 app.use(bodyParser.urlencoded({ extended: false}));
 
+app.engine('handlebars', handlebars({defaultLayout: 'layout'}));
+app.set('view engine', 'handlebars');
 
 var table = new Table({
 	head: ['Title', 'Shot descr']
 });
+
 request("http://news.mit.edu", (error, response, body)=>{
 	if(error) console.error(error);
 	var $ = cheerio.load(body);
@@ -26,11 +29,14 @@ request("http://news.mit.edu", (error, response, body)=>{
 
 	console.log(table.toString());
 })
-	//#latest-news-area > ul > li.article > div > a > div > 
-	
+//#latest-news-area > ul > li.article > div > a > div > 
 
-// instantiate 
+app.get("/", function(request, response){
+	console.log("/");
+	response.render("index");
+});
 
-
-// table is an Array, so you can `push`, `unshift`, `splice` and friends 
-
+app.listen(PORT, (err)=>{
+	if (err) throw(err);
+	console.log("Server started at "+PORT);
+})
