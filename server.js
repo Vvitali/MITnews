@@ -8,29 +8,48 @@ var Table = require('cli-table');
 var request = require("request");
 
 var app = express();
-
+var PORT =  process.env.PORT || 8080;
 app.use(bodyParser.urlencoded({ extended: false}));
 
+app.engine('handlebars', handlebars({defaultLayout: 'layout'}));
+app.set('view engine', 'handlebars');
+app.use(express.static('public'))
 
 var table = new Table({
-	head: ['Title', 'Shot descr']
+	head: ['Title', 'url', 'Shot descr']
 });
-request("http://news.mit.edu", (error, response, body)=>{
-	if(error) console.error(error);
-	var $ = cheerio.load(body);
-	var news = $("div.descr");
-	///console.log(news[0].children[0]);
-	for(var i = 0; i< 10; i++){
-		table.push([news[i].children[0].children[0].data, news[i].children[1].children[0].data]);
-	}
 
-	console.log(table.toString());
+//this function renders a list of news from MIT
+app.get("/", function(req, res){
+	console.log("/");
+	var list = [];
+	request("http://news.mit.edu", (error, response, body)=>{
+		if(error) console.error(error);
+		var $ = cheerio.load(body);
+		var news = $("li.mit-news>div.wrapper>");
+		//href : news[i].attribs.href
+		//img src : news[i].children[1].children[0].attribs.src
+		//title : 	   news[i].children[1].children[1].children[0].children[0].data
+		//desrciption: news[i].children[1].children[1].children[1].children[0].data
+		var len = news.length;
+		for(var i = 0; i< len; i++){
+			list.push({
+				title: news[i].children[1].children[1].children[0].children[0].data
+				, descr:news[i].children[1].children[1].children[1].children[0].data
+				, img: news[i].children[1].children[0].attribs.src
+				, href: news[i].attribs.href
+			});
+			//table.push([news[i].children[0].children[0].data, news[i].children[1].children[0].data.substring(0, 80)]);
+		}
+		//console.log(table.toString());
+		var temp = {};
+		temp["news"] = list;	
+		res.render("index", temp);	
+	});
+});
+
+app.listen(PORT, (err)=>{
+	if (err) throw(err);
+	console.log("Server started at "+PORT);
 })
-	//#latest-news-area > ul > li.article > div > a > div > 
-	
-
-// instantiate 
-
-
-// table is an Array, so you can `push`, `unshift`, `splice` and friends 
 
