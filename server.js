@@ -18,22 +18,29 @@ var table = new Table({
 	head: ['Title', 'Shot descr']
 });
 
-request("http://news.mit.edu", (error, response, body)=>{
-	if(error) console.error(error);
-	var $ = cheerio.load(body);
-	var news = $("div.descr");
-	///console.log(news[0].children[0]);
-	for(var i = 0; i< 10; i++){
-		table.push([news[i].children[0].children[0].data, news[i].children[1].children[0].data]);
-	}
-
-	console.log(table.toString());
-})
-//#latest-news-area > ul > li.article > div > a > div > 
-
-app.get("/", function(request, response){
+//this function renders a list of news from MIT
+app.get("/", function(req, res){
 	console.log("/");
-	response.render("index");
+	var list = [];
+	request("http://news.mit.edu", (error, response, body)=>{
+		if(error) console.error(error);
+		var $ = cheerio.load(body);
+		var news = $("div.descr"); //another way of path to titles:  #latest-news-area > ul > li.article > div > a > div > 
+		for(var i = 0; i< 10; i++){
+			list.push({
+				title:news[i].children[0].children[0].data
+				, descr:news[i].children[1].children[0].data
+			});
+			table.push([news[i].children[0].children[0].data, news[i].children[1].children[0].data.substring(0, 80)]);
+		}
+		console.log(table.toString());
+
+		var temp = {};
+		temp["news"] = list;
+		res.render("index", temp);	
+	});
+
+
 });
 
 app.listen(PORT, (err)=>{
