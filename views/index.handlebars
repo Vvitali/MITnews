@@ -1,5 +1,22 @@
 <h2>Hi!</h2>
 
 {{#each news}}
-<p>{{this.title}}</p>
+
+<div class="row">
+	<div class="col s12 m7">
+		<div class="card">
+			<div class="card-image">
+				<img src="{{this.img}}">
+				<span class="card-title">{{this.title}}</span>
+			</div>
+			<div class="card-content">
+				<p{{this.descr}}</p>
+			</div>
+			<div class="card-action">
+				<a href="{{this.href}}">Link</a>
+			</div>
+		</div>
+	</div>
+</div>
 {{/each}}
+

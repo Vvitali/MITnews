@@ -15,7 +15,7 @@ app.engine('handlebars', handlebars({defaultLayout: 'layout'}));
 app.set('view engine', 'handlebars');
 
 var table = new Table({
-	head: ['Title', 'Shot descr']
+	head: ['Title', 'url', 'Shot descr']
 });
 
 //this function renders a list of news from MIT
@@ -25,25 +25,30 @@ app.get("/", function(req, res){
 	request("http://news.mit.edu", (error, response, body)=>{
 		if(error) console.error(error);
 		var $ = cheerio.load(body);
-		var news = $("div.descr"); //another way of path to titles:  #latest-news-area > ul > li.article > div > a > div > 
-		for(var i = 0; i< 10; i++){
+		var news = $("li.mit-news>div.wrapper>");
+		//href : news[i].attribs.href
+		//img src : news[i].children[1].children[0].attribs.src
+		//title : 	   news[i].children[1].children[1].children[0].children[0].data
+		//desrciption: news[i].children[1].children[1].children[1].children[0].data
+		var len = news.length;
+		for(var i = 0; i< len; i++){
 			list.push({
-				title:news[i].children[0].children[0].data
-				, descr:news[i].children[1].children[0].data
+				title: news[i].children[1].children[1].children[0].children[0].data
+				, descr:news[i].children[1].children[1].children[1].children[0].data
+				, img: news[i].children[1].children[0].attribs.src
+				, href: news[i].attribs.href
 			});
-			table.push([news[i].children[0].children[0].data, news[i].children[1].children[0].data.substring(0, 80)]);
+			//table.push([news[i].children[0].children[0].data, news[i].children[1].children[0].data.substring(0, 80)]);
 		}
-		console.log(table.toString());
-
+		//console.log(table.toString());
 		var temp = {};
-		temp["news"] = list;
+		temp["news"] = list;	
 		res.render("index", temp);	
 	});
-
-
 });
 
 app.listen(PORT, (err)=>{
 	if (err) throw(err);
 	console.log("Server started at "+PORT);
 })
+
