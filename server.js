@@ -13,6 +13,7 @@ app.use(bodyParser.urlencoded({ extended: false}));
 
 app.engine('handlebars', handlebars({defaultLayout: 'layout'}));
 app.set('view engine', 'handlebars');
+app.use(express.static('public'))
 
 var table = new Table({
 	head: ['Title', 'url', 'Shot descr']
