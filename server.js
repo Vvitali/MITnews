@@ -48,6 +48,8 @@ app.get("/", function(req, res){
 	});
 });
 
+var require("./controllers/index.js")
+
 app.listen(PORT, (err)=>{
 	if (err) throw(err);
 	console.log("Server started at "+PORT);
