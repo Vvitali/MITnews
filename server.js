@@ -1,11 +1,14 @@
 var express = require("express");
+
 var handlebars = require("express-handlebars");
-var mongoose = require('mongoose');
+
 var bodyParser = require("body-parser");
 var cheerio = require("cheerio");
 var Table = require('cli-table');
 
 var request = require("request");
+
+var controllers =require("./controllers/index.js");
 
 var app = express();
 var PORT =  process.env.PORT || 8080;
@@ -35,20 +38,29 @@ app.get("/", function(req, res){
 		for(var i = 0; i< len; i++){
 			list.push({
 				title: news[i].children[1].children[1].children[0].children[0].data
-				, descr:news[i].children[1].children[1].children[1].children[0].data
-				, img: news[i].children[1].children[0].attribs.src
-				, href: news[i].attribs.href
+				, body:news[i].children[1].children[1].children[1].children[0].data
+				, photoUrl: news[i].children[1].children[0].attribs.src
+				, url: news[i].attribs.href
+				, note: ""
 			});
 			//table.push([news[i].children[0].children[0].data, news[i].children[1].children[0].data.substring(0, 80)]);
 		}
-		//console.log(table.toString());
+		controllers.Articles.create(list, function(err, done){
+			if(err){
+				console.log("Error:")
+				console.log(err);
+			} 
+			controllers.getLastArticles(10, (data)=>{
+				console.log(data);
+				res.render("index", {news: data});
+			});
+		})
 		var temp = {};
-		temp["news"] = list;	
-		res.render("index", temp);	
+		temp["news"] = list;
+		
 	});
 });
 
-var db =require("./controllers/index.js");
 
 app.listen(PORT, (err)=>{
 	if (err) throw(err);
