@@ -61,6 +61,12 @@ app.get("/", function(req, res){
 	});
 });
 
+app.post("/editnote", function(req, res){
+	var articleId = req.body.id;
+	var note = req.body.note;
+	console.log("Update article #"+articleId+", with note: ", note);
+})
+
 
 app.listen(PORT, (err)=>{
 	if (err) throw(err);
