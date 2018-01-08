@@ -31,6 +31,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
+			
 			$(".btn").click(function(eventObject){
 				console.log("click");
 				var data = {};
@@ -41,25 +42,23 @@
 						console.log(answer);
 						if(answer){
 							$(eventObject.currentTarget).parent().find('input[name="note"]').val("")
-							$(eventObject.currentTarget).parent().parent().find("ul").append("<li class='left-align'>New: "+data.note+"</li>");
+							$(eventObject.currentTarget).parent().parent().find("ul").append("<li class='left-align' data-note-id="+answer+">New: "+data.note+"<button class='btn-flat'>X</button></li>");
 						}
 					});
 				}
 			});
-			$(".btn-flat").click(function(eventObject){
+			$("body").on("click", ".btn-flat", function(eventObject){
+			//$(".btn-flat").click(function(eventObject){
 				console.log("click-delete");
 				var data = {};
-				data.id = $(eventObject.currentTarget).parent().find('input[name="id"]').val()
-				data.note = $(eventObject.currentTarget).parent().find('input[name="note"]').val()
-				if(data.note){
-					$.get("/delete//"+data.id, data, (answer)=>{
-						console.log(answer);
-						if(answer){
-							$(eventObject.currentTarget).parent().find('input[name="note"]').val("")
-							$(eventObject.currentTarget).parent().parent().find("ul").append("<li class='left-align'>New: "+data.note+"</li>");
-						}
-					});
-				}
+				data.id = $(eventObject.currentTarget).parent().parent().parent().find('input[name="id"]').val()
+				data.note_id = $(eventObject.currentTarget).parent().attr('data-note-id');
+				console.log(data)
+
+				$.post("/delete/" + data.id + "/"+data.note_id, function(answer){
+					console.log(answer);					
+					$(eventObject.currentTarget).parent().remove();
+				});
 			});
 
 		});

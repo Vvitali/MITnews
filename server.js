@@ -83,7 +83,7 @@ app.post("/delete/:articleId/:id", function(req, res){
 	controllers.Notes.findByIdAndRemove(req.params.id, (err, answer) => {
 		controllers.Articles.update(
 			{_id: req.params.articleId},
-			{$pull: {notesList: noteObject._id}},
+			{$pull: {notesList: req.params.id}},
 			(err)=>{
 				if(err){
 					res.send("1");
@@ -92,7 +92,7 @@ app.post("/delete/:articleId/:id", function(req, res){
 					res.status(200).send("Done");
 				}
 			});
-		
+
 	});
 })
 
