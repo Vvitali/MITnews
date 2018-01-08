@@ -19,11 +19,10 @@
 					<li class="left-align">#{{@index}}: {{this.note}}</li>
 					{{/each}}
 				</ul>
-				<form class="input-field" action="/addnote" method="post">
-					<INPUT TYPE="hidden" NAME="redirect" VALUE="/">
+				<form class="input-field" onsubmit="return false">
 					<input type="hidden" name="id" value="{{this.id}}">
 					<input placeholder="Your comment" name="note" type="text" class="validate">
-					<button class="btn" type="submit">Add comment</button>
+					<button class="btn">Add comment</button>
 				</form>
 			</div>
 		</li>

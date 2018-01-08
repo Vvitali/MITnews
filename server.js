@@ -68,9 +68,14 @@ app.post("/addnote", function(req, res){
 		controllers.Articles.update(
 			{_id: articleId},
 			{$push: {notesList: noteObject._id}},
-			(err, article)=>{
-				if(err) throw err;
-				res.send(!err && "Comment added");
+			(err)=>{
+				if(err){
+					res.send("1");
+					throw err;
+				}else{
+					res.send("0");
+				}
+
 			});
 	})
 	

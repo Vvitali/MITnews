@@ -9,6 +9,7 @@
 
 	
 	<link rel="stylesheet" href="/assets/style.css">
+	<script type="text/javascript"></script>
 </head>
 <body>
 	
@@ -22,16 +23,6 @@
 			<div class="col m2"></div>
 		</div>
 	</div>
-	
-	<div id="modal1" class="modal">
-		<div class="modal-content">
-			<h4>Comments</h4>
-			<p>A bunch of text</p>
-		</div>
-		<div class="modal-footer">
-			<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
-		</div>
-	</div>
 	<script
 	src="https://code.jquery.com/jquery-3.2.1.js"
 	integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
@@ -40,10 +31,24 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
-    // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
-    $('.modal').modal();
-});
-</script>
+			$(".btn").click(function(eventObject){
+				console.log("click");
+				var data = {};
+				data.id = $(eventObject.currentTarget).parent().find('input[name="id"]').val()
+				data.note = $(eventObject.currentTarget).parent().find('input[name="note"]').val()
+				if(data.note){
+					$.post("/addnote", data, (answer)=>{
+						console.log(answer);
+						if(answer){
+							$(eventObject.currentTarget).parent().find('input[name="note"]').val("")
+							$(eventObject.currentTarget).parent().parent().find("ul").append("<li class='left-align'>New: "+data.note+"</li>");
+						}
+					});
+				}
+				
+			});
+		});
+	</script>
 </body>
 
 </html>
