@@ -23,7 +23,7 @@ var articleSchema = mongoose.Schema({
 	body: String,
 	url: String, 
 	photoUrl: String,
-	note: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Notes' }]
+	notesList: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Notes' }]
 })
 var Articles = mongoose.model("Articles", articleSchema);
 module.exports = Articles;

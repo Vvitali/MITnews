@@ -9,9 +9,25 @@
 	<div class="card-content">
 		<p>{{this.body}}</p>
 	</div>
-	<div class="card-action">
-		<a href="http://news.mit.edu{{this.url}}">Link</a>
-	</div>
+	<ul class="card-action collapsible" data-collapsible="accordion">
+		<li><a class="collapsible-header" href="http://news.mit.edu{{this.url}}" target="_blank">Link</a></li>
+		<li>
+			<div class="collapsible-header">Comments</div>
+			<div class="collapsible-body">
+				<ul>
+					{{#each this.notesList}}
+					<li class="left-align">#{{@index}}: {{this.note}}</li>
+					{{/each}}
+				</ul>
+				<form class="input-field" action="/addnote" method="post">
+					<INPUT TYPE="hidden" NAME="redirect" VALUE="/">
+					<input type="hidden" name="id" value="{{this.id}}">
+					<input placeholder="Your comment" name="note" type="text" class="validate">
+					<button class="btn" type="submit">Add comment</button>
+				</form>
+			</div>
+		</li>
+	</ul>
 </div>
 {{/each}}
 

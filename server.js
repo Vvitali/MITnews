@@ -50,7 +50,6 @@ app.get("/", function(req, res){
 				console.log(err.errors.title.message);
 			} 
 			controllers.getLastArticles(10, (data)=>{
-				console.log(data[0].note);
 				res.render("index", {news: data});
 			});
 		})
@@ -60,7 +59,7 @@ app.get("/", function(req, res){
 	});
 });
 
-app.post("/editnote", function(req, res){
+app.post("/addnote", function(req, res){
 	var articleId = req.body.id;
 	var note = req.body.note;
 	console.log("Update article #"+articleId+", with note: ", note);
@@ -68,10 +67,10 @@ app.post("/editnote", function(req, res){
 		console.log("note object ID: "+ noteObject._id);
 		controllers.Articles.update(
 			{_id: articleId},
-			{$push: {note: noteObject._id}},
+			{$push: {notesList: noteObject._id}},
 			(err, article)=>{
 				if(err) throw err;
-				res.send(err || "Comment added");
+				res.send(!err && "Comment added");
 			});
 	})
 	
