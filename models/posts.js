@@ -9,11 +9,11 @@ var articleSchema = mongoose.Schema({
 			validator: function(name, cb){
 				Articles.find({title: name}, function(err, data){
 					if(data.length == 0){
-						console.log("null");
+						console.log("Adding article to DB!");
 						cb(true);
 					}else{
-						console.log("Notnull!");
-						cb(false, "osh");
+						console.log("Article already exists!");
+						cb(false);
 					}
 				});
 			},
@@ -23,7 +23,7 @@ var articleSchema = mongoose.Schema({
 	body: String,
 	url: String, 
 	photoUrl: String,
-	note: String
+	note: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Notes' }]
 })
 var Articles = mongoose.model("Articles", articleSchema);
 module.exports = Articles;

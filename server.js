@@ -41,17 +41,16 @@ app.get("/", function(req, res){
 				, body:news[i].children[1].children[1].children[1].children[0].data
 				, photoUrl: news[i].children[1].children[0].attribs.src
 				, url: news[i].attribs.href
-				, note: ""
 			});
 			//table.push([news[i].children[0].children[0].data, news[i].children[1].children[0].data.substring(0, 80)]);
 		}
 		controllers.Articles.create(list, function(err, done){
 			if(err){
 				console.log("Error:")
-				console.log(err);
+				console.log(err.errors.title.message);
 			} 
 			controllers.getLastArticles(10, (data)=>{
-				console.log(data);
+				console.log(data[0].note);
 				res.render("index", {news: data});
 			});
 		})
@@ -65,6 +64,17 @@ app.post("/editnote", function(req, res){
 	var articleId = req.body.id;
 	var note = req.body.note;
 	console.log("Update article #"+articleId+", with note: ", note);
+	controllers.Notes.create({note: note}, function(err, noteObject){
+		console.log("note object ID: "+ noteObject._id);
+		controllers.Articles.update(
+			{_id: articleId},
+			{$push: {note: noteObject._id}},
+			(err, article)=>{
+				if(err) throw err;
+				res.send(err || "Comment added");
+			});
+	})
+	
 })
 
 
