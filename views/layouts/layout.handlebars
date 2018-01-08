@@ -13,7 +13,7 @@
 </head>
 <body>
 	
-	<h1 class="center-align">Hello world!</h1>
+	<h1 class="center-align">Hello %username%!</h1>
 	<div class="container">
 		<div class="row">
 			<div class="col m2"></div>
@@ -45,8 +45,23 @@
 						}
 					});
 				}
-				
 			});
+			$(".btn-flat").click(function(eventObject){
+				console.log("click-delete");
+				var data = {};
+				data.id = $(eventObject.currentTarget).parent().find('input[name="id"]').val()
+				data.note = $(eventObject.currentTarget).parent().find('input[name="note"]').val()
+				if(data.note){
+					$.get("/delete//"+data.id, data, (answer)=>{
+						console.log(answer);
+						if(answer){
+							$(eventObject.currentTarget).parent().find('input[name="note"]').val("")
+							$(eventObject.currentTarget).parent().parent().find("ul").append("<li class='left-align'>New: "+data.note+"</li>");
+						}
+					});
+				}
+			});
+
 		});
 	</script>
 </body>

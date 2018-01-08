@@ -73,12 +73,27 @@ app.post("/addnote", function(req, res){
 					res.send("1");
 					throw err;
 				}else{
-					res.send("0");
+					res.send(noteObject._id);
 				}
-
 			});
 	})
-	
+});
+
+app.post("/delete/:articleId/:id", function(req, res){
+	controllers.Notes.findByIdAndRemove(req.params.id, (err, answer) => {
+		controllers.Articles.update(
+			{_id: req.params.articleId},
+			{$pull: {notesList: noteObject._id}},
+			(err)=>{
+				if(err){
+					res.send("1");
+					throw err;
+				}else{
+					res.status(200).send("Done");
+				}
+			});
+		
+	});
 })
 
 
