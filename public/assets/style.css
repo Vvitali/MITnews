@@ -1,9 +1,27 @@
 .card{
-	max-width: 350px;
+	max-width: 30%;
+	min-width: 270px;
 	margin: 10px;
-}
+	transition-property: all;
 
+	transition-duration: 2s;
+}
 .card-title{
 	color: black;
 	text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
+
+@media screen and (max-width: 1243px) {
+	.card{
+		max-width: 45%;
+	}
+}
+
+@media screen and (max-width: 700px) {
+	.card{
+		max-width: 100%;
+	}
+}
+
+
+

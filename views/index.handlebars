@@ -1,11 +1,11 @@
 {{#each news}}
-<div class="card left" data-id="{{this.id}}">
+<div class="card left z-depth-5" data-id="{{this.id}}" align="center">
 	<div class="card-image">
 		<img src="{{this.photoUrl}}">
 		<span class="card-title">{{this.title}}</span>
 	</div>
 	<div class="card-content">
-		<p>{{this.body}}</p>
+		<p class="truncate">{{this.body}}</p>
 	</div>
 	<ul class="card-action collapsible" data-collapsible="accordion">
 		<li><a class="collapsible-header" href="http://news.mit.edu{{this.url}}" target="_blank">Link</a></li>
