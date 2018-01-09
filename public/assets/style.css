@@ -3,7 +3,6 @@
 	min-width: 270px;
 	margin: 10px;
 	transition-property: all;
-
 	transition-duration: 2s;
 }
 .card-title{
@@ -20,6 +19,12 @@
 @media screen and (max-width: 700px) {
 	.card{
 		max-width: 100%;
+		width: 100%;
+		margin-right: 0px;
+		margin-left: 0px;
+	}
+	.container{
+		width: 100%;
 	}
 }
 
