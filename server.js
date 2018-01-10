@@ -29,19 +29,25 @@ app.get("/", function(req, res){
 	request("http://news.mit.edu", (error, response, body)=>{
 		if(error) console.error(error);
 		var $ = cheerio.load(body);
-		var news = $("li.mit-news>div.wrapper>");
+		var fs = require('fs');
+		fs.writeFile("1.txt", body);
+		var news = $("li>div", "#latest-news-area");
 		//href : news[i].attribs.href
 		//img src : news[i].children[1].children[0].attribs.src
 		//title : 	   news[i].children[1].children[1].children[0].children[0].data
 		//desrciption: news[i].children[1].children[1].children[1].children[0].data
-		var len = news.length;
-		for(var i = 0; i< len; i++){
+		var len = news.length-1;
+		console.log("Number:"+len)
+		for(var i = len; i>= 0; i--){
+			console.log(i+": "+$(news[i]).find("h3").text());
 			list.push({
-				title: news[i].children[1].children[1].children[0].children[0].data
-				, body:news[i].children[1].children[1].children[1].children[0].data
-				, photoUrl: news[i].children[1].children[0].attribs.src
+				title: $(news[i]).find("h3").text()
+				, body:$(news[i]).find("p").text()
+				, photoUrl: $(news[i]).find("img").attr('src')
 				, url: news[i].attribs.href
 			});
+
+
 			//table.push([news[i].children[0].children[0].data, news[i].children[1].children[0].data.substring(0, 80)]);
 		}
 		controllers.Articles.create(list, function(err, done){
@@ -49,7 +55,7 @@ app.get("/", function(req, res){
 				console.log("Error:")
 				console.log(err.errors.title.message);
 			} 
-			controllers.getLastArticles(10, (data)=>{
+			controllers.getLastArticles(50, (data)=>{
 				res.render("index", {news: data});
 			});
 		})

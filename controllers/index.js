@@ -9,7 +9,7 @@ db.on('error', console.error.bind(console, 'connection error:'));
 function getLastArticles(number, cb){
 	Articles.find({})
 	.populate('notesList')
-	.sort({'date': -1})
+	.sort({'date': 1})
 	.limit(number)
 	.exec(function(err, data){
 		cb(data);
