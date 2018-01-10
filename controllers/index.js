@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/test');
+mongoose.connect('mongodb://tst:password@ds237967.mlab.com:37967/heroku_d4x6lvfp');
 var db = mongoose.connection;
 var Notes = require('../models/notes.js');
 var Articles = require('../models/posts.js');
