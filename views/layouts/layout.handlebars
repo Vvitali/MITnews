@@ -10,7 +10,7 @@
 	<link rel="stylesheet" href="/assets/style.css">
 
 </head>
-<body style="z-index: -1;" onresize="displayCanvas()">
+<body style="z-index: -1;">
 	<canvas id="backgroundC" width="100%" height="100%" style="position: fixed; z-index: -20;"'>
 		<table>...</table>
 	</canvas>
@@ -20,7 +20,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col s12">
-				<div id="news" class="center-align">{{{body}}}</div>
+				<div id="news" class="center-align" onresize="displayCanvas()">{{{body}}}</div>
 			</div>
 		</div>
 	</div>
