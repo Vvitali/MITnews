@@ -26,12 +26,13 @@ var table = new Table({
 app.get("/", function(req, res){
 	console.log("/");
 	var list = [];
+
 	request("http://news.mit.edu", (error, response, body)=>{
 		if(error) console.error(error);
 		var $ = cheerio.load(body);
-		var fs = require('fs');
-		fs.writeFile("1.txt", body);
 		var news = $("li>div", "#latest-news-area");
+		var mainTopics = $("li>div", "#featured-items");
+
 		//href : news[i].attribs.href
 		//img src : news[i].children[1].children[0].attribs.src
 		//title : 	   news[i].children[1].children[1].children[0].children[0].data
@@ -44,7 +45,13 @@ app.get("/", function(req, res){
 				title: $(news[i]).find("h3").text()
 				, body:$(news[i]).find("p").text()
 				, photoUrl: $(news[i]).find("img").attr('src')
-				, url: news[i].attribs.href
+				, url: $(news[i]).find("a").attr('href')
+			});
+			list.push({
+				title: $(mainTopics[i]).find("h3").text()
+				, body:$(mainTopics[i]).find("p").text()
+				, photoUrl: $(mainTopics[i]).find("img").attr('src')
+				, url: $(mainTopics[i]).find("a").attr('href')
 			});
 
 
