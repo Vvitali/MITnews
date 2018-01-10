@@ -7,8 +7,8 @@ $(window).bind( 'orientationchange', function(e){
 let displayCanvas = ()=>{
 	var canvas = document.getElementById('backgroundC');
 	var ctx = canvas.getContext('2d');
-	var width = window.screen.width
-	var height = document.documentElement.clientHeight;
+	var width = window.screen.width;
+	var height = window.screen.height;
 	console.log(window.innerWidth+":"+window.innerHeight);
 	canvas.width  = width;
 	canvas.height = height;
