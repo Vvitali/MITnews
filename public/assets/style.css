@@ -10,6 +10,10 @@
 	text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
 
+h1, h2{
+	text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+}
+
 @media screen and (max-width: 1243px) {
 	.card{
 		max-width: 45%;

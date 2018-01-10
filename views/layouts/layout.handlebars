@@ -8,8 +8,12 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	
 	<link rel="stylesheet" href="/assets/style.css">
+
 </head>
-<body>
+<body style="z-index: -1;" onresize="displayCanvas()">
+	<canvas id="backgroundC" width="100%" height="100%" style="position: fixed; z-index: -20;"'>
+		<table>...</table>
+	</canvas>
 	{{> header}}
 	<h1 class="center-align">Hello %username%!</h1>
 	<h2 class="center-align">Welcome to MIT-news</h2>
@@ -28,7 +32,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
-			
+
 			$(".btn").click(function(eventObject){
 				console.log("click");
 				var data = {};
@@ -61,6 +65,7 @@
 		});
 	</script>
 	{{> footer}}
+	<script src="/assets/script.js"></script>
 </body>
 
 </html>
