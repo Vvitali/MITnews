@@ -6,14 +6,13 @@ var Articles = require('../models/posts.js');
 
 db.on('error', console.error.bind(console, 'connection error:'));
 
-function getLastArticles(number, cb){
-	Articles.find({})
-	.populate('notesList')
-	.sort({'date': -1})
-	.limit(number)
-	.exec(function(err, data){
-		cb(data);
-	});
+async function getLastArticles(number){
+	const data = await Articles.find({})
+		.populate('notesList')
+		.sort({'date': -1})
+		.limit(number)
+		.exec();
+	return data;
 };
 
 db.once('open', function() {
